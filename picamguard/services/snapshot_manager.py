@@ -5,19 +5,17 @@ import time
 import numpy as np
 
 # Create a stable absolute directory next to this script
-BASE_DIR = Path(__file__).resolve().parent
-SNAP_DIR = BASE_DIR / "snapshots"
-SNAP_DIR.mkdir(parents=True, exist_ok=True)
-
 class SnapshotsManager:
-    def __init__(self, max_snapshots):
-        self.snapshots = []
+    def __init__(self, max_snapshots, base_dir: Path):
         self.max_snapshots = max_snapshots
+        self.base_dir = base_dir
+        self.base_dir.mkdir(parents=True, exist_ok=True)
+        self.snapshots = []
         self.load_snapshots()
 
     def load_snapshots(self):
         """Load snapshots from the filesystem."""
-        for p in sorted(SNAP_DIR.glob("*.jpg"), key=lambda x: x.stat().st_mtime, reverse=True):
+        for p in sorted(self.base_dir.glob("*.jpg"), key=lambda x: x.stat().st_mtime, reverse=True):
             self.snapshots.append(str(p))  # trust existing files
 
     def add_snapshot(self, image, filename: str):
@@ -76,12 +74,13 @@ class SnapshotsManager:
         # If your frames are RGB (Picamera2 RGB888), convert to BGR for correct colors
         bgr = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
 
-        out_path = SNAP_DIR / filename
+        out_path = self.base_dir / filename
         ok = cv2.imwrite(str(out_path), bgr)
         if not ok:
             print(f"save_snapshot: imwrite failed to {out_path}")
-            print(f"cwd={os.getcwd()}  exists(SNAP_DIR)={SNAP_DIR.exists()}")
+            print(f"cwd={os.getcwd()}  exists(SNAP_DIR)={self.base_dir.exists()}")
             return None
 
         print(f"Saved snapshot -> {out_path}")
+        self.remove_old_snapshots()
         return str(out_path)

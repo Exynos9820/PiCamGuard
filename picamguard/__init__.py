@@ -7,6 +7,7 @@ from .camera_worker import start_camera_worker
 from routes.main import bp as main_bp
 from routes.snapshots import bp as snaps_bp
 from routes.api import bp as api_bp
+from routes.plots import bp as plots_bp
 
 def create_app():
     load_dotenv()
@@ -32,8 +33,9 @@ def create_app():
     start_camera_worker(state)
 
     # ---- Register blueprints ----
-    app.register_blueprint(main_bp)                # /
+    app.register_blueprint(main_bp)
     app.register_blueprint(snaps_bp, url_prefix="/snapshots")
     app.register_blueprint(api_bp,   url_prefix="/api")
+    app.register_blueprint(plots_bp)
 
     return app

@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>PiCamGuard – Plots</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="/static/styles.css" rel="stylesheet" />
+  <style>
+    .toolbar { display:flex; gap:12px; align-items:center; margin:12px 0; }
+    .panel   { background:#0b0f14; border:1px solid #2a3947; border-radius:12px; padding:12px; margin-bottom:16px; }
+    .canvas-wrap { width:100%; max-width:1100px; margin:auto; }
+    select, button { padding:6px 10px; border-radius:8px; border:1px solid #3a4a5c; background:#14202a; color:#e7eef7; }
+    a { color:#80c0ff; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Plots</h1>
+    <p><a href="/">← Back to Live Feed</a></p>
+  </header>
+
+  <!-- Motion score (bucketed max) -->
+  <section class="panel">
+    <div class="toolbar">
+      <strong>Motion (bucketed max)</strong>
+      <label>Range:
+        <select id="range-select">
+          <option value="1">1h</option>
+          <option value="6">6h</option>
+          <option value="12">12h</option>
+          <option value="24" selected>24h</option>
+          <option value="48">48h</option>
+        </select>
+      </label>
+      <button id="btn-refresh">Refresh</button>
+    </div>
+    <div class="canvas-wrap">
+      <canvas id="motionChart"></canvas>
+    </div>
+  </section>
+
+
+  <!-- Chart.js (CDN) -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="/static/plots.js"></script>
+</body>
+</html>

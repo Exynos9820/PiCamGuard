@@ -84,3 +84,7 @@ class SnapshotsManager:
         print(f"Saved snapshot -> {out_path}")
         self.remove_old_snapshots()
         return str(out_path)
+
+    @property
+    def num_snapshots(self):
+        return len(self.snapshots)

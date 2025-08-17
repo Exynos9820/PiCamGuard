@@ -36,3 +36,7 @@ class State:
 
         # Telemetry (optional)
         self.last_motion_score = 0
+
+    def update_metrics(self):
+        self.last_motion_score = self.motion_detector.last_motion_score
+        self.num_snapshots = self.snapshot_manager.num_snapshots

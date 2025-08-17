@@ -21,7 +21,7 @@ def create_app():
         MAX_NUM_SNAPSHOTS=int(os.getenv("MAX_NUM_SNAPSHOTS", 200)),
         NOTIFY_INTERVAL=int(os.getenv("NOTIFY_INTERVAL", 60)),
         MOTION_THRESHOLD=int(os.getenv("MOTION_THRESHOLD", 500_000)),
-        FRAME_INTERVAL=float(os.getenv("FRAME_INTERVAL", 0.05)),
+        FRAME_INTERVAL=float(os.getenv("FRAME_INTERVAL", 0.015)),
     )
 
     # ---- Shared state (camera, locks, managers) ----

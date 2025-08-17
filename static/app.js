@@ -16,15 +16,18 @@ document.getElementById('btn-save-latest').addEventListener('click', async () =>
 });
 
 async function pollStatus() {
-  	try {
-    	const r = await fetch('/status');
-    	const j = await r.json();
-    	document.getElementById('status').textContent =
-      	`motion: ${j.motion_score} / ${j.threshold}`;
-  	} catch (e) {
-    	// ignore
-  	} finally {
-    	setTimeout(pollStatus, 1000);
-  	}
+  try {
+    const r = await fetch('/api/status'); // or '/status' if that's your route
+    if (!r.ok) throw new Error(`${r.status} ${r.statusText}`);
+    const j = await r.json();
+    document.getElementById('status').textContent =
+      `motion: ${j.motion_score} / ${j.threshold}`;
+    document.getElementById('snapshot-count').textContent =
+      `snapshots: ${j.num_snapshots}`;
+  } catch (e) {
+    console.error('status fetch failed:', e);
+  } finally {
+    setTimeout(pollStatus, 1000);
+  }
 }
 pollStatus();

@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Home Camera</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="/static/styles.css" rel="stylesheet" />
+</head>
+<body>
+  <header>
+    <h1>Home Camera Live Feed</h1>
+  </header>
+
+  <main>
+    <section class="video">
+      <img id="stream" src="/video_feed" alt="Live stream" />
+    </section>
+
+    <section class="controls">
+      <button id="btn-snapshot">Save snapshot</button>
+      <span id="status">motion: …</span>
+    </section>
+  </main>
+  <p><a href="/snapshots">Open snapshots gallery</a></p>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>

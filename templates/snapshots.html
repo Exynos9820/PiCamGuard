@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Snapshots</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="/static/styles.css" rel="stylesheet" />
+  <style>
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 12px; }
+    .card { background: #11161c; border: 1px solid #2a3947; border-radius: 10px; padding: 8px; }
+    .thumb { width: 100%; height: auto; border-radius: 6px; display: block; }
+    .meta { font-size: 12px; color: #9fb2c5; margin-top: 6px; word-break: break-all; }
+    header { margin-bottom: 12px; }
+    a { color: #80c0ff; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .delete-btn {
+        margin-top: 6px;
+        padding: 4px 8px;
+        font-size: 12px;
+        border-radius: 6px;
+        border: 1px solid #c33;
+        background: #822;
+        color: #fff;
+        cursor: pointer;
+    }
+    .delete-btn:hover {
+        background: #a33;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Snapshots</h1>
+    <p><a href="/">← Back to Live Feed</a></p>
+  </header>
+
+  {% if names %}
+    <div class="grid">
+      {% for name in names %}
+        <div class="card" id="card-{{ name }}">
+        <a href="/snapshots/{{ name }}" target="_blank">
+            <img class="thumb" src="/snapshots/{{ name }}" alt="{{ name }}">
+        </a>
+        <div class="meta">{{ name }}</div>
+        <button class="delete-btn" data-name="{{ name }}">Delete</button>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p>No snapshots yet.</p>
+  {% endif %}
+</body>
+</html>
+
+<script>
+document.querySelectorAll('.delete-btn').forEach(btn => {
+  btn.addEventListener('click', async () => {
+    const name = btn.dataset.name;
+    if (!confirm(`Delete snapshot ${name}?`)) return;
+
+    try {
+      const resp = await fetch(`/snapshots/${name}/delete`, { method: "POST" });
+      const result = await resp.json();
+      if (result.ok) {
+        // remove the card from the DOM
+        document.getElementById(`card-${name}`).remove();
+      } else {
+        alert("Error deleting: " + result.error);
+      }
+    } catch (err) {
+      alert("Request failed: " + err);
+    }
+  });
+});
+</script>

@@ -24,6 +24,8 @@ async function pollStatus() {
       `motion: ${j.motion_score} / ${j.threshold}`;
     document.getElementById('snapshot-count').textContent =
       `snapshots: ${j.num_snapshots}`;
+	document.getElementById('memory-usage').textContent =
+	   `memory-usage: ${j.memory_usage}`;
   } catch (e) {
     console.error('status fetch failed:', e);
   } finally {
